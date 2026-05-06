@@ -2,12 +2,12 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Rommie",
-  description: "Flat/room mate finder"
+  title: "NestMate",
+  description: "Flat/room mate finder",
 };
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {

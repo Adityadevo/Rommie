@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getToken } from "@/lib/auth";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default function SplashPage() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function SplashPage() {
   useEffect(() => {
     const checkAuth = async () => {
       const token = getToken();
-      
+
       if (token) {
         // already logged in → home
         router.replace("/home");
@@ -29,7 +29,7 @@ export default function SplashPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="text-center animate-pulse">
         <div className="text-6xl font-black bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-6">
-          Rommie
+          NestMate
         </div>
         <div className="text-2xl text-slate-300 mb-8">
           Finding perfect flatmates
