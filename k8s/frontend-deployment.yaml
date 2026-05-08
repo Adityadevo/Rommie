@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: pratapad/rommie-frontend:51f6734cd649da542e4a0d0438e59808399b3e74
+        image: pratapad/rommie-frontend:34569dccdaf8ca0e18030cce9cffb67a57c3b547
         ports:
         - containerPort: 3000
 ---
