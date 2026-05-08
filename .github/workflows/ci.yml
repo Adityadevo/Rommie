@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Code checkout karo
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: DockerHub login karo
       uses: docker/login-action@v2
@@ -38,15 +40,23 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/rommie-frontend:latest
           ${{ secrets.DOCKERHUB_USERNAME }}/rommie-frontend:${{ github.sha }}
 
-    - name: Image tag update karo K8s manifests mein
+    - name: Image tags update karo K8s manifests mein
       run: |
-        sed -i "s|IMAGE_TAG|${{ github.sha }}|g" k8s/backend-deployment.yaml
-        sed -i "s|IMAGE_TAG|${{ github.sha }}|g" k8s/frontend-deployment.yaml
-    
+        # Hamesha fresh copy se kaam karo
+        cat k8s/backend-deployment.yaml | \
+          sed "s|${{ secrets.DOCKERHUB_USERNAME }}/rommie-backend:.*|${{ secrets.DOCKERHUB_USERNAME }}/rommie-backend:${{ github.sha }}|g" \
+          > k8s/backend-deployment-new.yaml
+        mv k8s/backend-deployment-new.yaml k8s/backend-deployment.yaml
+
+        cat k8s/frontend-deployment.yaml | \
+          sed "s|${{ secrets.DOCKERHUB_USERNAME }}/rommie-frontend:.*|${{ secrets.DOCKERHUB_USERNAME }}/rommie-frontend:${{ github.sha }}|g" \
+          > k8s/frontend-deployment-new.yaml
+        mv k8s/frontend-deployment-new.yaml k8s/frontend-deployment.yaml
+
     - name: Updated manifests commit karo
       run: |
         git config --global user.email "ci@github.com"
         git config --global user.name "GitHub Actions"
         git add k8s/
-        git commit -m "Update image tags to ${{ github.sha }}" || echo "No changes"
+        git commit -m "Update image tags to ${{ github.sha }}" || echo "No changes to commit"
         git push
