@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: pratapad/rommie-backend:latest
+        image: pratapad/rommie-backend:51f6734cd649da542e4a0d0438e59808399b3e74
         ports:
         - containerPort: 5000
 ---
