@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rommie-frontend
+  namespace: rommie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rommie-frontend
+  template:
+    metadata:
+      labels:
+        app: rommie-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: pratapad/rommie-frontend:IMAGE_TAG
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rommie-frontend-svc
+  namespace: rommie
+spec:
+  selector:
+    app: rommie-frontend
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: ClusterIP
