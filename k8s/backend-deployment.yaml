@@ -18,6 +18,19 @@ spec:
         image: pratapad/rommie-backend:51f6734cd649da542e4a0d0438e59808399b3e74
         ports:
         - containerPort: 5000
+        env:
+        - name: MONGO_URI
+          value: "mongodb+srv://fullstackdbuser:Aditya%400007@fullstackcluster.h4kqmjc.mongodb.net/fullstackappdb"
+        - name: JWT_SECRET
+          value: "secret123"
+        - name: PORT
+          value: "5000"
+        - name: CLOUDINARY_CLOUD_NAME
+          value: "dfyire9xu"
+        - name: CLOUDINARY_API_KEY
+          value: "963362658922675"
+        - name: CLOUDINARY_API_SECRET
+          value: "oMa4u7E0RRI_LUZg9D_TDwf1WM8"
 ---
 apiVersion: v1
 kind: Service
