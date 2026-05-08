@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rommie-app
+  namespace: argocd
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/Adityadevo/Rommie
+    targetRevision: main
+    path: k8s  # yahan se manifests padhega ArgoCD
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rommie
+  
+  syncPolicy:
+    automated:
+      prune: true      # purane resources delete karo
+      selfHeal: true   # agar koi change kare toh revert karo
+    syncOptions:
+    - CreateNamespace=true
