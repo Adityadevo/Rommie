@@ -1,0 +1,52 @@
+name: CI - Build and Push Docker Images
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Code checkout karo
+      uses: actions/checkout@v3
+
+    - name: DockerHub login karo
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Backend image build aur push karo
+      uses: docker/build-push-action@v4
+      with:
+        context: ./backennd
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/rommie-backend:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/rommie-backend:${{ github.sha }}
+
+    - name: Frontend image build aur push karo
+      uses: docker/build-push-action@v4
+      with:
+        context: ./frontend
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/rommie-frontend:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/rommie-frontend:${{ github.sha }}
+
+    - name: Image tag update karo K8s manifests mein
+      run: |
+        sed -i "s|IMAGE_TAG|${{ github.sha }}|g" k8s/backend-deployment.yaml
+        sed -i "s|IMAGE_TAG|${{ github.sha }}|g" k8s/frontend-deployment.yaml
+    
+    - name: Updated manifests commit karo
+      run: |
+        git config --global user.email "ci@github.com"
+        git config --global user.name "GitHub Actions"
+        git add k8s/
+        git commit -m "Update image tags to ${{ github.sha }}" || echo "No changes"
+        git push

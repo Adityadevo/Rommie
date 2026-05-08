@@ -123,7 +123,7 @@ Make sure these are set in your `.env` files:
 
 **Backend (`backennd/.env`):**
 ```
-MONGO_URI=your_mongodb_uri
+MONGODB_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
 PORT=5000
 ```
