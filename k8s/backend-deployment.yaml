@@ -19,7 +19,7 @@ spec:
         ports:
         - containerPort: 5000
         env:
-        - name: MONGO_URI
+        - name: MONGODB_URI
           value: "mongodb+srv://fullstackdbuser:Aditya%400007@fullstackcluster.h4kqmjc.mongodb.net/fullstackappdb"
         - name: JWT_SECRET
           value: "secret123"
